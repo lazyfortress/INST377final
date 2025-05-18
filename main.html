@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Main - INST377 Final</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script defer src="main.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+        <h2>INST377 - Final</h2>
+        <a href="inst377finalhome.html">Home</a>
+        <a href="main.html">Main</a>
+        <a href="about.html">About</a>
+        <a href="help.html">Help</a>
+        </nav>
+        <main class="content">
+        <h1 class="highlight-title">REIT & Economic Indicators (Main)</h1>
+        <label for="reitMain">REIT:</label>
+        <select id="reitMain">
+            <option value="NLY">NLY</option>
+            <option value="EQR">EQR</option>
+            <option value="INVH">INVH</option>
+        </select>
+
+        <label for="yearSelect">Year:</label>
+        <select id="yearSelect">
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+        </select>
+
+        <div>
+            <h3>Most Viewed REITs</h3>
+            <ol id="reitList"></ol>
+        </div>
+
+        <canvas id="reitGraph"></canvas>
+        <canvas id="fedGraph"></canvas>
+        <canvas id="cpiGraph"></canvas>
+        <canvas id="unempGraph"></canvas>
+        </main>
+    </div>
+</body>
+</html>
