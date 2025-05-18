@@ -18,13 +18,14 @@ function fetchAll() {
     fetchUnemployment(year);
 }
 
-// Logging interactions in Supabase; will fetch from database
-function logUserSelection(reit, year) {
-    fetch("http://localhost:3001/api/logInteraction", {
+// Logging interactions in Supabase; fetching from database
+function logUserSelection(reit, year) {''
+    // was http://localhost:3001/api/logInteraction for server.js
+    fetch("/api/interactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        action: "Main Page Graph Request",
+        action: "Main Page REIT Request",
         reit: reit,
         year: year
         })
@@ -39,14 +40,15 @@ function renderChart(canvasId, labels, data, label, color = "green") {
     chartInstances[canvasId] = new Chart(document.getElementById(canvasId), {
         type: "line",
         data: {
-        labels: labels,
-        datasets: [{
-            label: label,
-            data: data,
-            borderColor: color,
-            backgroundColor: color + "33",
-            fill: false
-        }]
+            labels: labels,
+            datasets: [{
+                label: label,
+                data: data,
+                borderColor: color,
+                // 33 is around 20% opacity
+                backgroundColor: color + "33",
+                fill: false
+            }]
         }
     });
 }
@@ -56,7 +58,6 @@ function renderChart(canvasId, labels, data, label, color = "green") {
 function fetchReitGraph(ticker, year) {
     const apiKey = "d865d46ac3cc40ffbcfbba2ec5cd2679";
     const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1month&outputsize=5000&apikey=${apiKey}`;
-  
     fetch(url)
         .then(res => res.json())
         .then(data => {
@@ -90,7 +91,6 @@ function fetchFedFunds(year) {
             console.warn("Invalid FedFunds data:", data);
             return;
         }
-
         const labels = data.observations.map(o => o.date);
         const values = data.observations.map(o => parseFloat(o.value));
 
@@ -137,7 +137,8 @@ function fetchUnemployment(year) {
 }
 
 function loadTopREITs() {
-    fetch("http://localhost:3001/api/reitLogs")
+    // was http://localhost:3001/api/reitlogs for server.js
+    fetch("/api/reitlogs")
         .then(res => res.json())
         .then(data => {
         const counts = {};

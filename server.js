@@ -17,18 +17,18 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // POST /api/logInteraction
 app.post('/api/logInteraction', async (req, res) => {
-    const { action, reit, year } = req.body;
+    const {action, reit, year} = req.body;
 
     const { data, error } = await supabase
         .from('reit_logs')
-        .insert([{ action, reit, year }]);
+        .insert([{action, reit, year}]);
 
     if (error) {
         console.error(error);
-        return res.status(500).json({ error });
+        return res.status(500).json({error});
     }
 
-    res.status(200).json({ message: 'Interaction logged', data });
+    res.status(200).json({message: 'Interaction logged', data});
 });
 
 // GET /api/reitLogs
@@ -36,11 +36,11 @@ app.get('/api/reitLogs', async (req, res) => {
     const { data, error } = await supabase
         .from('reit_logs')
         .select('*')
-        .order('timestamp', { ascending: false });
+        .order('timestamp', {ascending: false});
 
     if (error) {
         console.error(error);
-        return res.status(500).json({ error });
+        return res.status(500).json({error});
     }
 
     res.status(200).json(data);
