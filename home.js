@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logUserSelection(reitDropdown.value);
     });
 });
-  
+
 function loadReitData(ticker) {
     const apiKey = "d865d46ac3cc40ffbcfbba2ec5cd2679"; // TwelveData API Key
     const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1month&outputsize=12&apikey=${apiKey}`;
@@ -19,7 +19,7 @@ function loadReitData(ticker) {
                 return;
             }
             const values = data.values.slice().reverse(); // reverse for oldest first
-            const labels = values.map(v => v.datetime);
+            const labels = values.map(v => dayjs(v.datetime).format("MMM YYYY")); // day.js usage
             const prices = values.map(v => parseFloat(v.open));
             renderChart("reitChart", labels, prices, `${ticker} Price (12 months)`);
         })
@@ -39,7 +39,8 @@ function loadUnemploymentData() {
         const values = data.observations
             .filter(obs => obs.value !== ".")
             .slice(-12);
-        const labels = values.map(o => o.date);
+            
+        const labels = values.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
         const points = values.map(o => parseFloat(o.value));
         renderChart("unemploymentChart", labels, points, "US Unemployment (%)");
         })

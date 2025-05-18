@@ -70,7 +70,7 @@ function fetchReitGraph(ticker, year) {
             .filter(entry => entry.datetime.startsWith(year))
             .reverse();
     
-            const labels = filtered.map(entry => entry.datetime);
+            const labels = filtered.map(entry => dayjs(entry.datetime).format("MMM YYYY")); // day.js
             const prices = filtered.map(entry => parseFloat(entry.open));
     
             renderChart("reitGraph", labels, prices, `${ticker} Price (${year})`, "blue");
@@ -91,7 +91,7 @@ function fetchFedFunds(year) {
             console.warn("Invalid FedFunds data:", data);
             return;
         }
-        const labels = data.observations.map(o => o.date);
+        const labels = data.observations.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
         const values = data.observations.map(o => parseFloat(o.value));
 
         renderChart("fedGraph", labels, values, `Fed Funds Rate (${year})`, "purple");
@@ -110,7 +110,7 @@ function fetchCPI(year) {
             return;
         }
 
-        const labels = data.observations.map(o => o.date);
+        const labels = data.observations.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
         const values = data.observations.map(o => parseFloat(o.value));
 
         renderChart("cpiGraph", labels, values, `CPI (${year})`, "orange");
@@ -129,7 +129,7 @@ function fetchUnemployment(year) {
             return;
         }
 
-        const labels = data.observations.map(o => o.date);
+        const labels = data.observations.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
         const values = data.observations.map(o => parseFloat(o.value));
 
         renderChart("unempGraph", labels, values, `Unemployment (${year})`, "red");
