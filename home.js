@@ -9,8 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadReitData(ticker) {
-    const apiKey = "d865d46ac3cc40ffbcfbba2ec5cd2679"; // TwelveData API Key
-    const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1month&outputsize=12&apikey=${apiKey}`;
+    const apiKey = "d865d46ac3cc40ffbcfbba2ec5cd2679";
+    const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1month&outputsize=5000&apikey=${apiKey}`;
+
+    const endDate = dayjs().subtract(1, "month").endOf("month");  // ex. April 2025
+    const startDate = endDate.subtract(11, "month").startOf("month"); // ex. April 2024
+
     fetch(url)
         .then(res => res.json())
         .then(data => {
@@ -18,40 +22,39 @@ function loadReitData(ticker) {
                 console.warn("Invalid REIT data:", data);
                 return;
             }
-            const values = data.values.slice().reverse(); // reverse for oldest first
-            const labels = values.map(v => dayjs(v.datetime).format("MMM YYYY")); // day.js usage
-            const prices = values.map(v => parseFloat(v.open));
+            const filtered = data.values
+                .filter(entry => {
+                    const entryDate = dayjs(entry.datetime);
+                    return entryDate.isBetween(startDate, endDate, null, "[]");
+                })
+                .reverse(); // reverse for chronological order
+            const labels = filtered.map(v => dayjs(v.datetime).format("MMM YYYY"));
+            const prices = filtered.map(v => parseFloat(v.open));
+
             renderChart("reitChart", labels, prices, `${ticker} Price (12 months)`);
         })
-    .catch(err => console.error("REIT fetch failed:", err));
+        .catch(err => console.error("REIT fetch failed:", err));
 }
 
 function loadUnemploymentData() {
-    const apiKey = "5075d10eeb0273197ecdd86c830df92c";
+    const apiKey = "5075d10eeb0273197ecdd86c830df92c"; // FRED API Key
     const url = `https://api.stlouisfed.org/fred/series/observations?series_id=UNRATE&api_key=${apiKey}&file_type=json`;
-    const endDate = dayjs().subtract(1, "month").endOf("month");
-    const startDate = endDate.subtract(11, "month").startOf("month");
-
     fetch(url)
         .then(res => res.json())
         .then(data => {
             if (!data || !data.observations) {
-                console.warn("Invalid unemployment data:", data);
-                return;
-            }
-            const values = data.observations
-                .filter(obs => {
-                    if (obs.value === ".") return false;
-                    const date = dayjs(obs.date);
-                    return date.isBetween(startDate, endDate, null, "[]"); // inclusive
-                });
-
-            const labels = values.map(o => dayjs(o.date).format("MMM YYYY"));
-            const points = values.map(o => parseFloat(o.value));
-
-            renderChart("unemploymentChart", labels, points, "US Unemployment (%)");
+            console.warn("Invalid unemployment data:", data);
+            return;
+        }
+        const values = data.observations
+            .filter(obs => obs.value !== ".")
+            .slice(-12);
+            
+        const labels = values.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
+        const points = values.map(o => parseFloat(o.value));
+        renderChart("unemploymentChart", labels, points, "US Unemployment (%)");
         })
-        .catch(err => console.error("Unemployment fetch failed:", err));
+    .catch(err => console.error("Unemployment fetch failed:", err));
 }
 
 let chartInstances = {};
