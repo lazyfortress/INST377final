@@ -87,14 +87,16 @@ Each interaction with `index.html` or `main.html` stores:
 - `reit`: the REIT ticker (NLY, EQR, or INVH)
 - `year`: the selected year (e.g. 2021 or 2023)
 - `action`: where the interaction originated ("Main Page" or "Home Page" graph requests)
-
 The `reitlogs` endpoint is used by the front-end to analyze REIT popularity and identify the top 2 most accessed tickers.  This information is accessible at `main.html`.  The `interactions` endpoint is used by the front-end to send (POST) information to the back-end (Supabase).
+
 ---
 ### Current bugs/issues:
 
 Initially, Alpha Vantage's APIs were implemented, but due to severe rate limiting (25 API requests *per day*), TwelveData and FRED had to be implemented, as they offer a greater quanity of requests per day (TwelveData offers 800 requests per day, and FRED offers 120 requests *per minute*).  If a sudden influx of users is anticipated, it is advised that you purchase a premium API key with each provider.  If you wish to use a single API source, you can use Alpha Vantage's premium plans, but note that it will be $50/month for just 75 API calls per minute.
 
 ### Future Progress:
+---
 
 Future development should find a way to limit current REIT data and the "other economic factors" data to the most current available dates.  If unemployment percentages haven't been released, everything should be limited to the most current available date for *all* data.  As stated previously, if your future development expects a mass amount of visitors, you should migrate to a better API version with a higher allowed amount of API calls/requests.
+
 ---
