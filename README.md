@@ -8,14 +8,14 @@ Users can:
 - Compare indicators over any selected year, ranging from 2020 to 2025 (current year in progress)
 - See the most commonly viewed REITs based on real-time logs
 
-This web application uses real-time data from [TwelveData](https://twelvedata.com) for REIT stock prices and [FRED](https://fred.stlouisfed.org/) for economic indicators.  These are free-to-use APIs, but have rate-limiting (800 calls per day).  As for JavaScript libraries, two are used in this web app: **Chart.js** (for visualizations) and **Day.js** (timestamp formatting).
+This web application was initially developed with the use of Alpha Vantage's API, but rate-limiting (mentioned below) caused a switch to two other APIs.  The site uses real-time data from [TwelveData](https://twelvedata.com) for REIT stock prices and [FRED](https://fred.stlouisfed.org/) for economic indicators.  These are free-to-use APIs, but have rate-limiting (800 calls per day).  As for JavaScript libraries, two are used in this web app: **Chart.js** (for visualizations) and **Day.js** (timestamp formatting).
 
 ## Target Browsers:
 - Google Chrome (desktop-only)
 - Apple Safari (desktop-only)
-- Microsoft Edge
+- Microsoft Edge (desktop-only)
 
-Tested on MacOS 11+, Windows 10+, and Windows Server 2016+
+Tested on MacOS 11+, Windows 10+, and Windows Server 2016/2022
 
 ## Developer Manual (see below):
 See below in this README for developer installation, usage instructions, and API documentation.
@@ -62,6 +62,8 @@ This guide is for future developers who will maintain or expand the project.  Ba
     ```
 7.  If deploying on Vercel, use /api/ folder for interactions with Supabase and REIT
 
+---
+
 ### Testing:
 
 This project does not include any automated unit tests. Instead, it can be validated through the following manual testing process:
@@ -96,8 +98,9 @@ The `reitlogs` endpoint is used by the front-end to analyze REIT popularity and 
 
 Initially, Alpha Vantage's APIs were implemented, but due to severe rate limiting (25 API requests *per day*), TwelveData and FRED had to be implemented, as they offer a greater quanity of requests per day (TwelveData offers 800 requests per day, and FRED offers 120 requests *per minute*).  If a sudden influx of users is anticipated, it is advised that you purchase a premium API key with each provider.  If you wish to use a single API source, you can use Alpha Vantage's premium plans, but note that it will be $50/month for just 75 API calls per minute.
 
-### Future Progress:
 ---
+
+### Future Progress:
 
 Future development should find a way to limit current REIT data and the "other economic factors" data to the most current available dates.  If unemployment percentages haven't been released, everything should be limited to the most current available date for *all* data.  As stated previously, if your future development expects a mass amount of visitors, you should migrate to a better API version with a higher allowed amount of API calls/requests.
 
