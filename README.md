@@ -88,6 +88,7 @@ Each interaction with `index.html` or `main.html` stores:
 - `reit`: the REIT ticker (NLY, EQR, or INVH)
 - `year`: the selected year (e.g. 2021 or 2023)
 - `action`: where the interaction originated ("Main Page" or "Home Page" graph requests)
+
 The `reitlogs` endpoint is used by the front-end to analyze REIT popularity and identify the top 2 most accessed tickers.  This information is accessible at `main.html`.  The `interactions` endpoint is used by the front-end to send (POST) information to the back-end (Supabase).
 
 ---
