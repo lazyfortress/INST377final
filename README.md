@@ -78,13 +78,15 @@ This project does not include any automated unit tests. Instead, it can be valid
 
 Any caught errors will appear in the console in Visual Studio Code.
 
+Supabase usage will require a Supabase account, an API key, disabled RLS, and a table set up with  columns: 'id' as the primary key (using UUID), 'timestamp' (using timestamptz), 'action,' 'reit,' and 'year' (all using text).  Edits should be made to `/api/interactions.js` and `reitlogs.js` with your own Supabase information.
+
 ---
 ### Server-wide API Documentation:
 
 This application uses two custom *REST API* endpoints, hosted via Vercel's `/api/` serverless functions (this excludes server.js, as that is intended for local testing only):
 
-- */api/reitlogs.js* uses **GET** to retrieve (read) logs from the database
-- */api/interactions.js* uses **POST** to create (write) logs to the database 
+- */api/reitlogs.js* uses **GET** to retrieve (read) logs from the **Supabase** database
+- */api/interactions.js* uses **POST** to create (write) logs to the **Supabase** database 
 
 Each interaction with `index.html` or `main.html` stores:
 - `reit`: the REIT ticker (NLY, EQR, or INVH)
