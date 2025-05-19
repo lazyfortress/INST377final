@@ -75,6 +75,7 @@ This project does not include any automated unit tests. Instead, it can be valid
 5. User interactions should include a UID, a year (when in `main.html`) and REIT ticker.
 
 Any caught errors will appear in the console in Visual Studio Code.
+
 ---
 ### Server-wide API Documentation:
 
