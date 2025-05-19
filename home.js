@@ -10,27 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadReitData(ticker) {
     const apiKey = "d865d46ac3cc40ffbcfbba2ec5cd2679";
-    const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1month&outputsize=5000&apikey=${apiKey}`;
-
-    const endDate = dayjs().subtract(1, "month").endOf("month");  // ex. April 2025
-    const startDate = endDate.subtract(11, "month").startOf("month"); // ex. April 2024
+    const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1month&outputsize=24&apikey=${apiKey}`;
 
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            if (!data || !data.values) {
-                console.warn("Invalid REIT data:", data);
-                return;
-            }
-            const filtered = data.values
-                .filter(entry => {
-                    const entryDate = dayjs(entry.datetime);
-                    return entryDate.isBetween(startDate, endDate, null, "[]");
-                })
-                .reverse(); // reverse for chronological order
-            const labels = filtered.map(v => dayjs(v.datetime).format("MMM YYYY"));
-            const prices = filtered.map(v => parseFloat(v.open));
+            // Sort and keep last 12 actual months
+            const sorted = data.values
+                .map(d => ({ ...d, dateObj: dayjs(d.datetime) }))
+                .sort((a, b) => a.dateObj - b.dateObj)
+                .slice(-12);  // old to new filtering
 
+            const labels = sorted.map(v => dayjs(v.datetime).format("MMM YYYY"));
+            const prices = sorted.map(v => parseFloat(v.open));
             renderChart("reitChart", labels, prices, `${ticker} Price (12 months)`);
         })
         .catch(err => console.error("REIT fetch failed:", err));
