@@ -91,8 +91,9 @@ function fetchFedFunds(year) {
             console.warn("Invalid FedFunds data:", data);
             return;
         }
-        const labels = data.observations.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
-        const values = data.observations.map(o => parseFloat(o.value));
+        const filtered = data.observations.filter(o => o.date.startsWith(year));
+        const labels = filtered.map(o => dayjs(o.date).format("MMM YYYY"));
+        const values = filtered.map(o => parseFloat(o.value));
 
         renderChart("fedGraph", labels, values, `Fed Funds Rate (${year})`, "purple");
         });
@@ -110,8 +111,9 @@ function fetchCPI(year) {
             return;
         }
 
-        const labels = data.observations.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
-        const values = data.observations.map(o => parseFloat(o.value));
+        const filtered = data.observations.filter(o => o.date.startsWith(year));
+        const labels = filtered.map(o => dayjs(o.date).format("MMM YYYY"));
+        const values = filtered.map(o => parseFloat(o.value));
 
         renderChart("cpiGraph", labels, values, `CPI (${year})`, "orange");
         });
@@ -129,8 +131,9 @@ function fetchUnemployment(year) {
             return;
         }
 
-        const labels = data.observations.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
-        const values = data.observations.map(o => parseFloat(o.value));
+        const filtered = data.observations.filter(o => o.date.startsWith(year));
+        const labels = filtered.map(o => dayjs(o.date).format("MMM YYYY"));
+        const values = filtered.map(o => parseFloat(o.value));
 
         renderChart("unempGraph", labels, values, `Unemployment (${year})`, "red");
         });
