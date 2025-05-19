@@ -1,3 +1,5 @@
+// remember to change fetch locations in home.js and main.js
+// current locations are accurate for Vercel deployment
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');

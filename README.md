@@ -36,6 +36,7 @@ This guide is for future developers who will maintain or expand the project.  Ba
         git clone https://github.com/[enter your username here]/INST377FINAL.git
         cd INST377FINAL
         ```
+    This will ensure all current files are on your system.
 
 2. Install backend dependencies (used only for local server testing):
     ```bash
@@ -92,3 +93,8 @@ The `reitlogs` endpoint is used by the front-end to analyze REIT popularity and 
 ### Current bugs/issues:
 
 Initially, Alpha Vantage's APIs were implemented, but due to severe rate limiting (25 API requests *per day*), TwelveData and FRED had to be implemented, as they offer a greater quanity of requests per day (TwelveData offers 800 requests per day, and FRED offers 120 requests *per minute*).  If a sudden influx of users is anticipated, it is advised that you purchase a premium API key with each provider.  If you wish to use a single API source, you can use Alpha Vantage's premium plans, but note that it will be $50/month for just 75 API calls per minute.
+
+### Future Progress:
+
+Future development should find a way to limit current REIT data and the "other economic factors" data to the most current available dates.  If unemployment percentages haven't been released, everything should be limited to the most current available date for *all* data.  As stated previously, if your future development expects a mass amount of visitors, you should migrate to a better API version with a higher allowed amount of API calls/requests.
+---

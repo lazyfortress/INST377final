@@ -25,13 +25,14 @@ function logUserSelection(reit, year) {''
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        action: "Main Page REIT Request",
-        reit: reit,
-        year: year
+            action: "Main Page REIT Request",
+            reit: reit,
+            year: year
         })
     }).catch(err => console.warn("Could not log:", err));
 }
 
+// Edited to include any unit symbols
 function renderChart(canvasId, labels, data, label, color = "green") {
     if (chartInstances[canvasId]) {
         chartInstances[canvasId].destroy();
@@ -79,7 +80,7 @@ function fetchReitGraph(ticker, year) {
         .then(res => res.json())
         .then(data => {
             if (!data || !data.values) {
-            console.warn("Invalid TwelveData REIT response:", data);
+            console.warn("TwelveData issue: ", data);
             return;
             }
     
@@ -105,7 +106,7 @@ function fetchFedFunds(year) {
         .then(res => res.json())
         .then(data => {
         if (!data || !data.observations) {
-            console.warn("Invalid FedFunds data:", data);
+            console.warn("FedFunds issue:", data);
             return;
         }
         const filtered = data.observations.filter(o => o.date.startsWith(year));
@@ -144,7 +145,7 @@ function fetchUnemployment(year) {
         .then(res => res.json())
         .then(data => {
         if (!data || !data.observations) {
-            console.warn("Invalid unemployment data:", data);
+            console.warn("Unemployment data issue:", data);
             return;
         }
 
@@ -161,22 +162,22 @@ function loadTopREITs() {
     fetch("/api/reitlogs")
         .then(res => res.json())
         .then(data => {
-        const counts = {};
-        data.forEach(entry => {
-            const r = entry.reit;
-            if (r) counts[r] = (counts[r] || 0) + 1;
-        });
+            const counts = {};
+            data.forEach(entry => {
+                const r = entry.reit;
+                if (r) counts[r] = (counts[r] || 0) + 1;
+            });
 
-        const top = Object.entries(counts)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 2);
+            const top = Object.entries(counts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 2);
 
-        const list = document.getElementById("reitList");
-        list.innerHTML = "";
-        top.forEach(([reit, count]) => {
-            const li = document.createElement("li");
-            li.textContent = `${reit} (${count} views)`;
-            list.appendChild(li);
-        });
+            const list = document.getElementById("reitList");
+            list.innerHTML = "";
+            top.forEach(([reit, count]) => {
+                const li = document.createElement("li");
+                li.textContent = `${reit} (${count} views)`;
+                list.appendChild(li);
+            });
         });
 }

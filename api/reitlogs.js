@@ -10,7 +10,7 @@ export default async function handler(req, res) {
             Authorization: `Bearer ${supabaseKey}`
         }
     });
-  
+
     const result = await response.json();
     res.status(200).json(result);
 }

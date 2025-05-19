@@ -16,11 +16,6 @@ function loadReitData(ticker) {
         .then(res => res.json())
         .then(data => {
             const unemploymentLabels = chartInstances["unemploymentChart"]?.data?.labels;
-            if (!unemploymentLabels || unemploymentLabels.length === 0) {
-                console.warn("Unemployment labels unavailable for alignment.");
-                return;
-            }
-
             // Match REIT chart to the unemployment chart's months
             const reitByMonth = {};
             data.values.forEach(entry => {
@@ -36,16 +31,10 @@ function loadReitData(ticker) {
                     alignedPrices.push(reitByMonth[label]);
                 }
             });
-
-            if (alignedPrices.length === 0) {
-                console.warn("No aligned REIT data found.");
-                return;
-            }
             renderChart("reitChart", alignedLabels, alignedPrices, `${ticker} Price ($)`, "blue");
         })
         .catch(err => console.error("REIT fetch failed:", err));
 }
-
 
 function loadUnemploymentData() {
     const apiKey = "5075d10eeb0273197ecdd86c830df92c"; // FRED API Key
@@ -79,11 +68,11 @@ function renderChart(canvasId, labels, data, label) {
         data: {
             labels: labels,
             datasets: [{
-            label: label,
-            data: data,
-            borderColor: "blue",
-            backgroundColor: "lightblue",
-            fill: false,
+                label: label,
+                data: data,
+                borderColor: "blue",
+                backgroundColor: "lightblue",
+                fill: false,
             }]
         }
     });
