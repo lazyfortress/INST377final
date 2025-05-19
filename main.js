@@ -57,7 +57,7 @@ function renderChart(canvasId, labels, data, label, color = "green") {
                         label: function (context) {
                             const label = context.dataset.label;
                             const value = context.raw;
-                            if (label.includes("REIT")) return `${label}: $${value.toFixed(2)}`;
+                            if (label.includes("Price")) return `${label}: $${value.toFixed(2)}`;
                             if (label.includes("Fed Funds")) return `${label}: ${value.toFixed(2)}%`;
                             if (label.includes("Unemployment")) return `${label}: ${value.toFixed(1)}%`;
                             if (label.includes("CPI")) return `${label}: ${value.toFixed(3)}`;
