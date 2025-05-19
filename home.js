@@ -27,24 +27,31 @@ function loadReitData(ticker) {
 }
 
 function loadUnemploymentData() {
-    const apiKey = "5075d10eeb0273197ecdd86c830df92c"; // FRED API Key
+    const apiKey = "5075d10eeb0273197ecdd86c830df92c";
     const url = `https://api.stlouisfed.org/fred/series/observations?series_id=UNRATE&api_key=${apiKey}&file_type=json`;
+    const endDate = dayjs().subtract(1, "month").endOf("month");
+    const startDate = endDate.subtract(11, "month").startOf("month");
+
     fetch(url)
         .then(res => res.json())
         .then(data => {
             if (!data || !data.observations) {
-            console.warn("Invalid unemployment data:", data);
-            return;
-        }
-        const values = data.observations
-            .filter(obs => obs.value !== ".")
-            .slice(-12);
-            
-        const labels = values.map(o => dayjs(o.date).format("MMM YYYY")); // day.js
-        const points = values.map(o => parseFloat(o.value));
-        renderChart("unemploymentChart", labels, points, "US Unemployment (%)");
+                console.warn("Invalid unemployment data:", data);
+                return;
+            }
+            const values = data.observations
+                .filter(obs => {
+                    if (obs.value === ".") return false;
+                    const date = dayjs(obs.date);
+                    return date.isBetween(startDate, endDate, null, "[]"); // inclusive
+                });
+
+            const labels = values.map(o => dayjs(o.date).format("MMM YYYY"));
+            const points = values.map(o => parseFloat(o.value));
+
+            renderChart("unemploymentChart", labels, points, "US Unemployment (%)");
         })
-    .catch(err => console.error("Unemployment fetch failed:", err));
+        .catch(err => console.error("Unemployment fetch failed:", err));
 }
 
 let chartInstances = {};
